@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Tic-Tac-Toe</title>
+  <title>Tic-Tac-Toe</title>
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-2.2.3.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-2.2.3.js"></script>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
 
-    <!-- our CSS -->
-    <link rel="stylesheet" href="css/css.css"/>
+  <!-- our CSS -->
+  <link rel="stylesheet" href="css/css.css"/>
 
-    <script src="js/js.js"></script>
+  <script src="js/js.js"></script>
 
 </head>
 <body>
@@ -27,28 +27,39 @@
 
     <section class="row">
       <div class="col-md-4"></div>
-      <table class="col-md-4">
-        <tr>
-          <td id="tl"><button></button></td>
-          <td id="tc"><button></button></td>
-          <td id="tr"><button></button></td>
-        </tr>
-        <tr>
-          <td id="ml"><button></button></td>
-          <td id="mc"><button></button></td>
-          <td id="mr"><button></button></td>
-        </tr>
-        <tr>
-          <td id="bl"><button></button></td>
-          <td id="bc"><button></button></td>
-          <td id="br"><button></button></td>
-        </tr>
-      </table>
-      <div class="col-md-4"></div>
-    </section>
+      <div class="col-md-4">
+        <section id="gameDone" class="row hidden">
+          <img id="gif" src="" hidden="true"/>
+          <p id="feedback" hidden="true"></p>
+        </section>
+        <section id="main">
+          <table class="row center">
+            <tr>
+              <td id="tl"><button></button></td>
+              <td id="tc"><button></button></td>
+              <td id="tr"><button></button></td>
+            </tr>
+            <tr>
+              <td id="ml"><button></button></td>
+              <td id="mc"><button></button></td>
+              <td id="mr"><button></button></td>
+            </tr>
+            <tr>
+              <td id="bl"><button></button></td>
+              <td id="bc"><button></button></td>
+              <td id="br"><button></button></td>
+            </tr>
+          </table>
+        </section>
+        <section id="newgame" class="row hidden">
+          <button class="btn btn-primary" style="background-color: blue">New Game
+          </section>
+        </div>
+        <div class="col-md-4"></div>
+      </section>
 
-  </main>
+    </main>
 
 
-</body>
-</html>
+  </body>
+  </html>

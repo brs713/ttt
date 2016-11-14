@@ -8,27 +8,66 @@
   font-family: monospace;
 }
 
+.hidden {
+  display: none;
+}
+
+#gameDone {
+  text-align: center;
+  font-size: 30px;
+  font-family: monospace;
+  color: red;
+}
+
+#newgame {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 30px;
+  font-family: monospace;
+  color: red;
+}
+
+#cat {
+  text-align: center;
+  font-size: 30px;
+  font-family: monospace;
+  color: red;
+}
+
+.center {
+  margin: auto;
+  width: 100%;
+  height: 100%;
+}
+
+.test {
+  border: 1px solid green;
+}
+
+table {
+  margin: 0 auto; /* or margin: 0 auto 0 auto */
+}
+
 tr {
-  height: 150px;
+  height: 100px;
   padding: 0;
   margin: 0;
 }
 
 td {
-  width: 150px;
+  width: 100px;
   padding: 0;
   margin: 4px;
   text-align: center;
   vertical-align: middle;
-
 }
 
-button {
+td button {
   color: red;
-  font-size: 146px;
+  font-size: 96px;
   font-family: monospace;
-  height: 145px;
-  width: 148px;
+  height: 95px;
+  width: 98px;
   outline: none;
   border: 0;
   padding: auto;
