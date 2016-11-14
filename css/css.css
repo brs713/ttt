@@ -1,0 +1,63 @@
+.jumbotron {
+  background: gold;
+  color: #FAFAFA;
+  text-align: center;
+}
+
+.jumbotron h1 {
+  font-family: monospace;
+}
+
+tr {
+  height: 150px;
+  padding: 0;
+  margin: 0;
+}
+
+td {
+  width: 150px;
+  padding: 0;
+  margin: 4px;
+  text-align: center;
+  vertical-align: middle;
+
+}
+
+button {
+  color: red;
+  font-size: 146px;
+  font-family: monospace;
+  height: 145px;
+  width: 148px;
+  outline: none;
+  border: 0;
+  padding: auto;
+  margin: auto;
+  box-shadow: 0;
+  background: inherit;
+  line-height: 0px;
+}
+
+#tl {
+  border-right: 4px solid gold;
+  border-bottom: 4px solid gold;
+}
+
+#tr {
+  border-left: 4px solid gold;
+  border-bottom: 4px solid gold;
+}
+
+#mc {
+  border: 4px solid gold;
+}
+
+#bl {
+  border-right: 4px solid gold;
+  border-top: 4px solid gold;
+}
+
+#br {
+  border-left: 4px solid gold;
+  border-top: 4px solid gold;
+}
