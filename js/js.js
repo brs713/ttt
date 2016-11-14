@@ -29,20 +29,23 @@ $(document).ready(function() {
   //display gif div
 
   //change "I give up button" to new game button
-  let move = 1;
-  let gameOver = 0;
-  let catsPath;
+
 
   checkGameOver = function () {
+    /*
+    Board:
+      tl  tc  tr
+      ml  mc  mr
+      bl  bc  br
 
-    //GameWinning
-    // ul  uc  ur
-    // ml  mc  mr
-    // bl  bc  br
+    GameWinning Conditions: (game is won if...)
+      -...there's 3 of any given letter
+        e.g.  (3m's or 3c's represent center row or column victory)
+        (this handles all row & column victories)
+      -x has captured opposing corners
+    */
 
-    // if there's 3 of any given letter, game is won
-    // if mc & all letters different
-
+    /* MAKE A COLLECTION OF ALL THE SPACES OCCUPIED BY 'X' */
     // create an empty string
     let xMoves = [];
 
@@ -57,38 +60,49 @@ $(document).ready(function() {
       }
     });
 
-    // check diagonals
-    //1st diag:
+
+    /* CHECK DIAGONALS */
+    //1st diagonal-
     if ((xMoves.indexOf('tl') !== -1) && (xMoves.indexOf('br') !== -1)) { aiWon(); }
-    //2nd diag:
+    //2nd diagonal-
     if ((xMoves.indexOf('bl') !== -1) && (xMoves.indexOf('tr') !== -1)) { aiWon(); }
 
-    //process to convert to a new array of letters only
+
+    /* COUNT THE LETTERS AND CHECK IF ANY APPEAR 3 TIMES */
+    // Convert to a new array of letters only:
     let xLetters = xMoves.reduce(function(letter1, letter2) {
       return letter1.concat(letter2);
     });
 
-    // make an object to store [] of {letter:count}
+    // Make an object to store [] of {letter:count}
     let counts = {};
 
-    // check each letter in xLetters.
+    // Check each letter in xLetters:
     for (let i = 0; i < xLetters.length ; ++i) {
       let ltr = xLetters.charAt(i);
 
-      // get the current letter count
+      // Get the current letter count:
       let count = counts[ltr];
 
-      // update the letter count - (if it already exists), add 1 : else it's now 1
+      // Update the letter count - (if it already exists), add 1 : else it's now 1
       counts[ltr] = (count) ? count + 1 : 1;
-
     }
 
+    // Check the letter counts...
     for (ltr in counts) {
-      // if there are ever 3, game over.
+      // ...if there are ever 3, game over.
       if (counts[ltr] === 3) { aiWon(); }
     }
   };
 
+
+  // Game over, man!
+  aiWon = function() {
+    $('td button').prop('disabled', true);
+  }
+
+
+  // Carries out the tasks needed to update the board after the ai chooses its move.
   aiPlay = function(square) {
     $('#' + square + ' button')
     .prop('disabled', true)
@@ -96,90 +110,80 @@ $(document).ready(function() {
     .html("X");
   };
 
+
+  // The logic that determines what moves the ai makes.
   aiRespond = function(move, square) {
     switch (move) {
 
-      case 1:
-      // 1st computer response
-      if (isO('bc') || isO('ml') || isO('bl')) {
-        aiPlay('tr');
-      }
+      case 1: // 1st ai move:
+        if (isO('bc') || isO('ml') || isO('bl')) {
+          aiPlay('tr');
+        }
 
-      if (isO('mr') || isO('tc') || isO('tr')) {
-        aiPlay('bl');
-      }
+        if (isO('mr') || isO('tc') || isO('tr')) {
+          aiPlay('bl');
+        }
 
-      if (isO('br')) {
-        aiPlay('tl');
-      }
+        if (isO('br')) {
+          aiPlay('tl');
+        }
 
-      if (isO('tl')) {
-        aiPlay('br');
-      }
-      break;
-
-
-      case 2:
-      // determine computer's 2nd response
-      // PRIORITY RESPONSE - computer is in a potentially losing scenario
-      //		- computer only has 1 option for a successful block
-      if ((isO('bc') && isO('br')) || (isO('ml') && isO('tl')) || (isO('tl') && isO('mr')) || (isO('br') && isO('tc'))) {
-        aiPlay('bl');
-      }
-
-      else if ((isO('bl') && isO('bc')) || (isO('mr') && isO('tr')) || (isO('tr') && isO('ml')) || (isO('bl') && isO('tc'))) {
-        aiPlay('br');
-      }
-
-      else if ((isO('bl') && isO('ml')) || (isO('tc') && isO('tr')) || (isO('bl') && isO('mr')) || (isO('tr') && isO('bc'))) {
-        aiPlay('tl');
-      }
-
-      else if ((isO('br') && isO('mr')) || (isO('tl') && isO('tc')) || (isO('br') && isO('ml')) || (isO('tl') && isO('bc'))) {
-        aiPlay('tr');
-      }
-
-      else if (isO('bl') && isO('br')) {
-        aiPlay('bc');
-        catsPath = true;
-      }
-
-      else if (isO('bl') && isO('tl')) {
-        aiPlay('ml');
-        catsPath = true;
-      }
-
-      else if (isO('br') && isO('tr')) {
-        aiPlay('mr');
-        catsPath = true;
-      }
-
-      else if (isO('tl') && isO('tr')) {
-        aiPlay('tc');
-        catsPath = true;
-      } // end PRIORITY RESPONSES
-
-      else if (isO('bl')) {
-        aiPlay('tr');
-        gameOver = true;
-      }
-
-      else if (isO('tr')) {
-        aiPlay('bl');
-        gameOver = true;
-      }
-      else {//nothing
-      }
-      break;
+        if (isO('tl')) {
+          aiPlay('br');
+        }
+        break;
 
 
+      case 2: // 2nd ai move:
+        if ((isO('bc') && isO('br')) || (isO('ml') && isO('tl')) || (isO('tl') && isO('mr')) || (isO('br') && isO('tc'))) {
+          aiPlay('bl');
+        }
+
+        else if ((isO('bl') && isO('bc')) || (isO('mr') && isO('tr')) || (isO('tr') && isO('ml')) || (isO('bl') && isO('tc'))) {
+          aiPlay('br');
+        }
+
+        else if ((isO('bl') && isO('ml')) || (isO('tc') && isO('tr')) || (isO('bl') && isO('mr')) || (isO('tr') && isO('bc'))) {
+          aiPlay('tl');
+        }
+
+        else if ((isO('br') && isO('mr')) || (isO('tl') && isO('tc')) || (isO('br') && isO('ml')) || (isO('tl') && isO('bc'))) {
+          aiPlay('tr');
+        }
+
+        else if (isO('bl') && isO('br')) {
+          aiPlay('bc');
+        }
+
+        else if (isO('bl') && isO('tl')) {
+          aiPlay('ml');
+        }
+
+        else if (isO('br') && isO('tr')) {
+          aiPlay('mr');
+        }
+
+        else if (isO('tl') && isO('tr')) {
+          aiPlay('tc');
+        }
+
+        else if (isO('bl')) {
+          aiPlay('tr');
+        }
+
+        else if (isO('tr')) {
+          aiPlay('bl');
+        }
+        else { //nothing
+        }
+        break;
+
+      // Next ai moves
       case 3:
-
       case 4:
-
       case 5:
 
-
+      // Advanced logic used to play out the remainder of the game:
       if (tryToWin() === 'failed') {
         // console.log("tryToWin failed.")
         if (avoidLosing() === 'failed') {
@@ -191,6 +195,10 @@ $(document).ready(function() {
     }
   }
 
+
+  /* ADVANCED LOGIC FUNCTIONS */
+  // tryToWin()
+  //      - priority #1:  if the computer has a winning move, take it
   tryToWin = function() {
     console.log("begin tryToWin...");
     // Corners
@@ -291,17 +299,18 @@ $(document).ready(function() {
       return;
     }
 
-    // Single Paths
-    if (isX('tc') && isOpen('bc')) { aiPlay('bc'); return; }
-    if (isX('bc') && isOpen('tc')) { aiPlay('tc'); return; }
-    if (isX('ml') && isOpen('mr')) { aiPlay('mr'); return; }
-    if (isX('mr') && isOpen('ml')) { aiPlay('ml'); return; }
-    // if (isX('') && isOpen('')) { aiPlay(''); }
-
+    // Single Paths - vertical center & horizontal middle
+    else if (isX('tc') && isOpen('bc')) { aiPlay('bc'); return; }
+    else if (isX('bc') && isOpen('tc')) { aiPlay('tc'); return; }
+    else if (isX('ml') && isOpen('mr')) { aiPlay('mr'); return; }
+    else if (isX('mr') && isOpen('ml')) { aiPlay('ml'); return; }
 
     else { return 'failed'}
   }
 
+
+  // avoidLosing()
+  //      - priority #2: if the ai is in danger of losing, block
   avoidLosing = function() {
     console.log("begin avoidLosing...")
     // Corners
@@ -328,7 +337,6 @@ $(document).ready(function() {
       else { return 'failed'; }
       return;
     }
-
 
     // Corner & Adjacent
     else if (isO('tl') && isO('tm')) {
@@ -382,22 +390,24 @@ $(document).ready(function() {
     else { return 'failed'; }
   }
 
+
+  // anyPlay()
+  //      - lowest priority - just make a semi-random move
   anyPlay = function() {
     console.log('begin anyPlay...')
 
-    // if there's still a chance to win (2 open & middle or center spaces), try.
-    // horizontal middle row can still win
-    if (isOpen('ml') && isOpen('mr')) {
+    // If there's still a chance to win (2 open & middle or center spaces), try.
+    if (isOpen('ml') && isOpen('mr')) {  // horizontal middle row can still win
       aiPlay('ml');
       return;
     }
-    // vertical center column can still win
-    if (isOpen('tc') && isOpen('bc')) {
+
+    if (isOpen('tc') && isOpen('bc')) {  // vertical center column can still win
       aiPlay('tc');
       return;
     }
 
-    // otherwise, play the first open space.
+    // Otherwise, play the first open space.
     let squares = [];
     $('td button').each(function() {
       let square = $(this).parent().attr('id');
@@ -412,39 +422,49 @@ $(document).ready(function() {
     }
   }
 
-  checkButton = function(buttonId) {
-    console.log(buttonId + ' button is ' + $('#' + buttonId + ' button').prop('disabled'));
-    return $('#' + buttonId + ' button').prop('disabled');
-  }
 
+  /* HELPER FUNCTIONS
+    A collection of boolean functions that return information about
+    the state of the game board.
+  */
+
+  // square belongs to 'X'
   isX = function(buttonId) {
     return isMySquare(buttonId, 'X');
   }
 
+  // square belongs to 'O'
   isO = function(buttonId) {
     return isMySquare(buttonId, 'O')
   }
 
+  // used by isX and isO to learn what character the square displays
   isMySquare = function(buttonId, player) {
     return $('#' + buttonId + ' button').html() == player;
   }
 
+  // is this square open?
   isOpen = function(buttonId) {
     return !$('#' + buttonId + ' button').prop('disabled');
   }
 
+
+  /* *** GAMEPLAY *** */
+  // Start a move counter:
+  let move = 1;
+
   // Opening move:
   aiPlay("mc");
 
+  // Displays an 'O' in the square if it's available:
   $('button').mouseenter(function() {
     $(this).html("O");
   });
-
   $('button').mouseleave(function() {
     $(this).html("");
   });
 
-  // Whenever a button is clicked:
+  // When the user makes a move:
   $('button').click(function() {
     $(this).html("O")
     .prop('disabled', true);
@@ -453,9 +473,5 @@ $(document).ready(function() {
     checkGameOver();
     move++;
   });
-
-  aiWon = function() {
-    $('td button').prop('disabled', true);
-  }
 
 });
